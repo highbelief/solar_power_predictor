@@ -16,6 +16,14 @@ def daily_prediction_task():
     try:
         data = load_daily_data()
         processed_data = preprocess_data(data)
+
+        # 학습 데이터 길이 출력
+        print(f"Processed data length: {len(processed_data)}")
+
+        if processed_data.empty:
+            logging.error("No data available for training.")
+            return
+
         model = train_model(processed_data)
 
         # 예측 시간대
@@ -28,8 +36,13 @@ def daily_prediction_task():
             save_prediction(observation_time, predicted_power)
 
         logging.info("Daily prediction task completed successfully.")
+
     except Exception as e:
         logging.error(f"An error occurred: {e}")
+
+    finally:
+        # 여기에서 리소스 정리 작업 또는 추가 로그를 수행할 수 있습니다.
+        logging.info("Daily prediction task finished.")
 
 
 # 스케줄 시작

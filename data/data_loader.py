@@ -13,12 +13,26 @@ def load_daily_data():
     SELECT * FROM simulation_data
     WHERE observation_time BETWEEN '{start_time}' AND '{end_time}'
     """
-    data = pd.read_sql(query, engine)
-    return data
 
+    data = pd.read_sql(query, engine)
+
+    # 로드된 데이터의 길이 출력
+    print(f"Data loaded: {len(data)} rows")
+
+    return data
 
 # 데이터 전처리
 def preprocess_data(data):
-    data = data.dropna()
+    # observation_time 열을 datetime 형식으로 강제 변환
+    data['observation_time'] = pd.to_datetime(data['observation_time'], errors='coerce')
+
+    # 결측값 제거
+    data = data.dropna(subset=['observation_time'])
+
+    # hour 열 추가
     data['hour'] = data['observation_time'].dt.hour
+
+    # 최종 데이터 길이 출력
+    print(f"Data after preprocessing: {len(data)} rows")
+
     return data
