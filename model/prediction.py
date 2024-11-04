@@ -12,9 +12,12 @@ def predict_next_day(model, observation_hour):
         'cloud_coverage': [20],
         'hour': [observation_hour]
     })
-    predicted_power = model.predict(data)[0]
+
+    # 예측 후 다시 520 배율로 조정하여 kW 단위로 변환
+    predicted_power = model.predict(data)[0] * 520.0
     print(f"Predicted Power for {observation_hour} hour: {predicted_power}")
     return predicted_power
+
 
 # 예측 결과 저장
 def save_prediction(observation_time, predicted_power, predicted_battery_level=80, predicted_status="정상"):
