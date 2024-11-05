@@ -47,7 +47,7 @@ def daily_prediction_task():
 
 # 스케줄 시작
 def start_scheduler():
-    schedule.every().day.at("20:25").do(daily_prediction_task)
+    schedule.every().day.at("18:00").do(daily_prediction_task)
     while True:
         schedule.run_pending()
         time.sleep(60)
